@@ -1,0 +1,44 @@
+spring:
+  kafka:
+      producer:
+        bootstrap-servers: 127.0.0.1:9092
+        group-id: tenant
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      consumer:
+        bootstrap-servers: localhost:9092
+        group-id: tenant
+        auto-offset-reset: earliest
+        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+        properties:
+          spring.json.trusted.packages: "*"
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: tenant-service
+  application:
+    name: TENANT-SERVICE
+
+topic:
+  name:
+    consumer: tenant.create
+    deleteAll: delete.all.tenants
+
+
+auto:
+  create:
+    topics:
+      enable: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+eureka:
+  instance:
+    client:
+      serverUrl:
+        defaultZone: http://eureka:password@localhost:8761/eureka/
+
