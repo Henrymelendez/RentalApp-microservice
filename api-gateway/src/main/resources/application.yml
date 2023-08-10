@@ -1,0 +1,31 @@
+eureka:
+  instance:
+    client:
+      serverUrl:
+        defaultZone: http://localhost:8761/eureka/
+server:
+  port: 9191
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      routes:
+        - id: AUTH-SERVICE
+          predicates:
+            - Path=/user/**
+            - Path=/token/**
+            - Path=/role/**
+          uri: lb://AUTH-SERVICE
+        - id: PROPERTY-SERVICE
+          predicates:
+            - Path=/property/**
+            - Path=/broker/**
+          uri: lb://PROPERTY-SERVICE
+        - id: TENANT-SERVICE
+          predicates:
+            - Path=/tenant/**
+          uri: lb://TENANT-SERVICE
+
+
+
