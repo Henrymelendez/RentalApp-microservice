@@ -1,0 +1,39 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: property-service
+  application:
+    name: PROPERTY-SERVICE
+  kafka:
+    producer:
+      bootstrap-servers: 127.0.0.1:9092
+      group-id: tenant
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
+server:
+  port: 0
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+eureka:
+  instance:
+    client:
+      serverUrl:
+        defaultZone: http://localhost:8761/eureka/
+
+auto:
+  create:
+    topics:
+      enable: 'true'
+
+
+topic:
+  name:
+    producer: tenant.create
+    deleteAll: delete.all.tenants
