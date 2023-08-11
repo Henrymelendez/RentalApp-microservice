@@ -12,3 +12,70 @@ services:
       KAFKA_ADVERTISED_HOST_NAME: localhost
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+
+  api-gateway:
+    build:
+      context: /
+    ports:
+      - "9191:9191"
+    depends_on:
+      - discovery-service
+  discovery-service:
+    build:
+      context: /
+    ports:
+      - "8761:8761"
+  auth-service:
+    build:
+      context: /
+    ports:
+      - "0"
+    depends_on:
+      - discovery-service
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://localhost:27017/auth-rental
+
+  property-service:
+    build:
+      context: /
+    ports:
+      - "0"
+    depends_on:
+      - discovery-service
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://localhost:27017/property-service
+
+  tenant-service:
+    build:
+      context: /
+    ports:
+      - "0"
+    depends_on:
+      - discovery-service
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://localhost:27017/tenant-service
+
+  auth-mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - auth-mongodb-data:/data/db
+
+  property-mongo:
+    image: mongo:latest
+    ports:
+      - "27018:27017"
+    volumes:
+      - property-mongodb-data:/data/db
+
+  tenant-mongo:
+    image: mongo:latest
+    ports:
+      - "27019:27017"
+    volumes:
+      - tenant-mongodb-data:/data/db
+volumes:
+  auth-mongodb-data:
+  property-mongodb-data:
+  tenant-mongodb-data:
