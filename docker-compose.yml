@@ -24,18 +24,23 @@ services:
       - "9191:9191"
     depends_on:
       - discovery-service
+      - zipkin
   discovery-service:
     build:
       context: /
     ports:
       - "8761:8761"
+    depends_on:
+      - zipkin
   auth-service:
     build:
       context: /
     ports:
       - "0"
     depends_on:
+      - auth-mongo
       - discovery-service
+      - api-gateway
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://localhost:27017/auth-rental
 
@@ -45,7 +50,11 @@ services:
     ports:
       - "0"
     depends_on:
+      - property-mongo
+      - kafka
+      - zipkin
       - discovery-service
+      - api-gateway
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://localhost:27017/property-service
 
@@ -55,7 +64,11 @@ services:
     ports:
       - "0"
     depends_on:
+      - tenant-mongo
+      - kafka
+      - zipkin
       - discovery-service
+      - api-gateway
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://localhost:27017/tenant-service
 
