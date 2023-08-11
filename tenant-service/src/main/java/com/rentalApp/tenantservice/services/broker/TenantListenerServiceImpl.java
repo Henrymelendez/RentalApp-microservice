@@ -22,8 +22,7 @@ public class TenantListenerServiceImpl implements TenantListenerService {
     private ModelMapper modelMapper;
     @Value("${topic.name.consumer}")
     private String topicName;
-    @Value("${topic.name.deleteAll}")
-    private String deleteAllTopic;
+
 
 
 
@@ -34,9 +33,5 @@ public class TenantListenerServiceImpl implements TenantListenerService {
         tenantService.createTenant(tenantDTO);
     }
 
-    @KafkaListener(topics = "${topic.name.deleteAll}", groupId = "tenant")
-    public void consumeDeleteAllTenants(ConsumerRecord<String, String> payload) {
-        String propertyId = payload.value();
-        tenantService.deleteAll(propertyId);
-    }
+
 }

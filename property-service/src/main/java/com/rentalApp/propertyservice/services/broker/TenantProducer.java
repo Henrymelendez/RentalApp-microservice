@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
 public class TenantProducer {
     @Value("${topic.name.producer}")
     private String topicName;
-    @Value("${topic.name.deleteAll}")
-    private String deleteAllTopic;
+
     @Autowired
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
@@ -24,8 +23,5 @@ public class TenantProducer {
         kafkaTemplate.send(topicName,message);
     }
 
-    public void send(String propertyId){
-        log.info("Payload", propertyId);
-        kafkaTemplate.send(deleteAllTopic, propertyId);
-    }
+
 }

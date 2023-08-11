@@ -15,7 +15,7 @@ spring:
     base-url: http://localhost:9411/
 
 server:
-  port: 8080
+  port: 8081
 
 management:
   endpoints:
@@ -32,10 +32,9 @@ eureka:
 auto:
   create:
     topics:
-      enable: 'true'
+      enable: true
 
 
 topic:
   name:
     producer: tenant.create
-    deleteAll: delete.all.tenants
