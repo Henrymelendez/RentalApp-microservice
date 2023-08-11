@@ -8,6 +8,8 @@ services:
     image: wurstmeister/kafka
     ports:
       - "9092:9092"
+    depends_on:
+      - zookeeper
     environment:
       KAFKA_ADVERTISED_HOST_NAME: localhost
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -19,24 +21,30 @@ services:
 
   api-gateway:
     build:
-      context: /
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    image: /
     ports:
-      - "9191:9191"
+      - "8080:8080"
     depends_on:
       - discovery-service
       - zipkin
   discovery-service:
     build:
-      context: /
+      context: ./discovery-service
+      dockerfile: Dockerfile
+    image: /
     ports:
       - "8761:8761"
     depends_on:
       - zipkin
   auth-service:
     build:
-      context: /
+      context: ./auth-service
+      dockerfile: Dockerfile
+    image: /
     ports:
-      - "0"
+      - "8080:8080"
     depends_on:
       - auth-mongo
       - discovery-service
@@ -46,9 +54,11 @@ services:
 
   property-service:
     build:
-      context: /
+      context: ./property-service
+      dockerfile: Dockerfile
+    image: /
     ports:
-      - "0"
+      - "8080:8080"
     depends_on:
       - property-mongo
       - kafka
@@ -60,9 +70,11 @@ services:
 
   tenant-service:
     build:
-      context: /
+      context: ./tenant-service
+      dockerfile: Dockerfile
+    image: /
     ports:
-      - "0"
+      - "8080:8080"
     depends_on:
       - tenant-mongo
       - kafka
