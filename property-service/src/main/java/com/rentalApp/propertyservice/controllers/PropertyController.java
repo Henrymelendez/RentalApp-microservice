@@ -27,6 +27,7 @@ public class PropertyController {
 
 
     @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('USER','ADMIN'")
     @ResponseStatus(HttpStatus.CREATED)
     public PropertyDTO createProperty(@RequestBody PropertyDTO propertyDTO, HttpServletRequest httpServletRequest){
         checkNotNull(propertyDTO);
@@ -37,6 +38,7 @@ public class PropertyController {
         return propertyDTO;
     }
     @GetMapping("/info/{propertyId}")
+    @PreAuthorize("hasAnyRole('USER','ADMIN'")
     public PropertyDTO getProperty(@PathVariable String propertyId, HttpServletRequest httpServletRequest) throws UserNotAllowedException {
         String jwtToken = getJwtTokenFromHeader(httpServletRequest);
         String userId = tokenService.getUserId(jwtToken);
@@ -44,12 +46,14 @@ public class PropertyController {
     }
 
     @GetMapping("/all/{userId}")
+    @PreAuthorize("hasAnyRole('USER','ADMIN'")
     public List<PropertyDTO> getAllPropertiesForUser(@PathVariable String userId, HttpServletRequest httpServletRequest) throws UserNotAllowedException {
         String jwtToken = getJwtTokenFromHeader(httpServletRequest);
         String callerUserId = tokenService.getUserId(jwtToken);
         return propertyService.fetchPropertyForUserId(userId,callerUserId);
     }
     @PutMapping("/update")
+    @PreAuthorize("hasAnyRole('USER','ADMIN'")
     public PropertyDTO updateProperty(@RequestBody PropertyDTO property, HttpServletRequest httpServletRequest){
         String jwtToken = getJwtTokenFromHeader(httpServletRequest);
         String userId = tokenService.getUserId(jwtToken);
