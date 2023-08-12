@@ -6,7 +6,7 @@ spring:
       host: mongodb://localhost:27017
       database: auth-rental
   application:
-    name: AUTH-SERVICE
+    name: auth-service
 
   zipkin:
     base-url: http://localhost:9411/

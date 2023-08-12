@@ -15,7 +15,7 @@ spring:
       uri: mongodb://localhost:27017
       database: tenant-service
   application:
-    name: TENANT-SERVICE
+    name: tenant-service
 
 topic:
   name:

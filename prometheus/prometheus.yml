@@ -1,0 +1,23 @@
+global:
+  scrape_interval: 10s
+  evaluation_interval: 10s
+
+scrape_configs:
+  - job_name: 'auth_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['auth-service:8080']
+        labels:
+          application: 'Auth Service Application'
+  - job_name: 'property_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['property-service:8080']
+        labels:
+          application: 'Property Service Application'
+  - job_name: 'tenant_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['tenant-service:8080']
+        labels:
+          application: 'Tenant Service Application'

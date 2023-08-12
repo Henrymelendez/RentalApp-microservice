@@ -4,7 +4,7 @@ spring:
       uri: mongodb://localhost:27017
       database: property-service
   application:
-    name: PROPERTY-SERVICE
+    name: property-service
   kafka:
     producer:
       bootstrap-servers: 127.0.0.1:9092

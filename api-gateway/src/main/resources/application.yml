@@ -7,27 +7,31 @@ server:
   port: 8080
 spring:
   application:
-    name: API-GATEWAY
+    name: api-gateway
   cloud:
     gateway:
       routes:
-        - id: AUTH-SERVICE
+        - id: auth-service
           predicates:
             - Path=/user/**
             - Path=/token/**
             - Path=/role/**
-          uri: lb://AUTH-SERVICE
-        - id: PROPERTY-SERVICE
+          uri: lb://auth-service
+        - id: property-service
           predicates:
             - Path=/property/**
             - Path=/broker/**
-          uri: lb://PROPERTY-SERVICE
-        - id: TENANT-SERVICE
+          uri: lb://property-service
+        - id: tenant-service
           predicates:
             - Path=/tenant/**
-          uri: lb://TENANT-SERVICE
+          uri: lb:/tenant-service
   zipkin:
     base-url: http://localhost:9411/
 
 
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
