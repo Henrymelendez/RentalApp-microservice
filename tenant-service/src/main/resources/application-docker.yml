@@ -1,0 +1,21 @@
+spring:
+  kafka:
+    consumer:
+      bootstrap-servers: broker:29092
+  data:
+    mongodb:
+      host: mongo
+      port: 27017
+      database: tenant-service
+
+server:
+  port: 8080
+
+management:
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery-service

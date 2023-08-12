@@ -1,0 +1,24 @@
+server:
+  port: 8080
+spring:
+  data:
+    mongodb:
+      host: mongo
+      port: 27017
+      database: property-service
+    kafka:
+      producer:
+        bootstrap-servers: broker:29092
+
+management:
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://dicovery-service:8761/eureka

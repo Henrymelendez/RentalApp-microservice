@@ -13,7 +13,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Component
 public class JwtInterceptor implements HandlerInterceptor {
 
-    private final String AUTH_SERVICE_URL = "http://AUTH-SERVICE/token/validate";
+    private final String AUTH_SERVICE_URL = "http://auth-service/token/validate";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -24,6 +24,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         }
 
         token.substring(7);
+        System.out.println(token);
 
         try {
             HttpHeaders headers = new HttpHeaders();

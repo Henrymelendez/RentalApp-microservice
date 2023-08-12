@@ -6,12 +6,9 @@ import java.util.Date;
 
 @Data
 public class TenantDTO {
-    private String id;
-    private String firstName;
-    private String lastName;
     private String jwtToken;
     private String propertyId;
-    private Date createdAt;
-    private Date updatedAt;
+    private String firstName;
+    private String lastName;
 
 }

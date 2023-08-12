@@ -28,9 +28,10 @@ public class TenantListenerServiceImpl implements TenantListenerService {
 
     @Override
     @KafkaListener(topics = "${topic.name.consumer}", groupId = "tenant")
-    public void consumeTenant(ConsumerRecord<String, TenantDTO> payload) {
-        TenantDTO tenantDTO = payload.value();
+    public void consumeTenant(TenantDTO payload) {
+        TenantDTO tenantDTO = payload;
         tenantService.createTenant(tenantDTO);
+        System.out.println("Got it");
     }
 
 

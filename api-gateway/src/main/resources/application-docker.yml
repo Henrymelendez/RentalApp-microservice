@@ -1,0 +1,33 @@
+eureka:
+  instance:
+    client:
+      serviceUrl:
+        defaultZone: http://eureka:password@discovery-service:8761/eureka
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          predicates:
+            - Path=/user/**
+            - Path=/token/**
+            - Path=/role/**
+          uri: lb://auth-service
+        - id: property-service
+          predicates:
+            - Path=/property/**
+            - Path=/broker/**
+          uri: lb://property-service
+        - id: tenant-service
+          predicates:
+            - Path=/tenant/**
+          uri: lb:/tenant-service
+management:
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411
+app:
+  eureka-server: discovery-service

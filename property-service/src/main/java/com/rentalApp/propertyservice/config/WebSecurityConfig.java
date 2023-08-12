@@ -40,7 +40,8 @@ public class WebSecurityConfig {
     }
     private PropertyAuthFilter propertyAuthFilter() throws Exception {
         OrRequestMatcher orRequestMatcher = new OrRequestMatcher(
-                new AntPathRequestMatcher("/property/**")
+                new AntPathRequestMatcher("/property/**"),
+                new AntPathRequestMatcher("/broker/**")
         );
         PropertyAuthFilter authFilter = new PropertyAuthFilter(orRequestMatcher);
         authFilter.setAuthenticationManager(authenticationManager());

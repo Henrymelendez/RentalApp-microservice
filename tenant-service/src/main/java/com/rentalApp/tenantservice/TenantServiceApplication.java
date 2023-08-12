@@ -17,12 +17,6 @@ public class TenantServiceApplication {
 		SpringApplication.run(TenantServiceApplication.class, args);
 	}
 
-	@Bean
-	public NewTopic topic(){
-		return TopicBuilder.name("tenant.create")
-				.partitions(1)
-				.replicas(1)
-				.build();
-	}
+
 
 }

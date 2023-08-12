@@ -5,7 +5,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 public interface TenantListenerService {
 
-    void consumeTenant(ConsumerRecord<String, TenantDTO> payload);
+    void consumeTenant(TenantDTO payload);
   //  void consumeDeleteAllTenants(ConsumerRecord<String,String> payload);
 
 

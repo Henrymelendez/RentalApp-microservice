@@ -1,90 +1,104 @@
 version: '3'
 services:
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    expose:
+      - "27017"
+    volumes:
+      - ./mongo-data:/data/db
   zookeeper:
-    image: wurstmeister/zookeeper
+    image: confluentinc/cp-zookeeper:7.0.1
+    container_name: zookeeper
     ports:
       - "2181:2181"
-  kafka:
-    image: wurstmeister/kafka
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+  broker:
+    image: confluentinc/cp-kafka:7.0.1
+    container_name: broker
     ports:
       - "9092:9092"
     depends_on:
       - zookeeper
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: localhost
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
   zipkin:
-    image: openzipkin/zipkin:latest
+    image: openzipkin/zipkin
+    container_name: zipkin
     ports:
       - "9411:9411"
 
-  api-gateway:
-    build:
-      context: ./api-gateway
-      dockerfile: Dockerfile
-    image: /
-    ports:
-      - "8080:8080"
-    depends_on:
-      - discovery-service
-      - zipkin
   discovery-service:
-    build:
-      context: ./discovery-service
-      dockerfile: Dockerfile
     image: /
+    container_name: discovery-service
     ports:
       - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - zipkin
-  auth-service:
-    build:
-      context: ./auth-service
-      dockerfile: Dockerfile
+  api-gateway:
     image: /
+    container_name: api_gateway
     ports:
-      - "8080:8080"
-    depends_on:
-      - auth-mongo
-      - discovery-service
-      - api-gateway
+      - "8181:8080"
+    expose:
+      - "8181"
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://localhost:27017/auth-rental
+      - SPRING_PROFILES_ACTIVE=docker
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
+    depends_on:
+      - zipkin
+      - discovery-service
 
-  property-service:
-    build:
-      context: ./property-service
-      dockerfile: Dockerfile
+  auth-service:
+    container_name: auth-service
     image: /
-    ports:
-      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
     depends_on:
-      - property-mongo
-      - kafka
-      - zipkin
+      - mongo
       - discovery-service
       - api-gateway
+      -
+  property-service:
+    container_name: property-service
+    image: /
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://localhost:27017/property-service
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - mongo
+      - discovery-service
+      - broker
+      - zipkin
+      - api-gateway
 
   tenant-service:
-    build:
-      context: ./tenant-service
-      dockerfile: Dockerfile
-    image: /
-    ports:
-      - "8080:8080"
-    depends_on:
-      - tenant-mongo
-      - kafka
-      - zipkin
-      - discovery-service
-      - api-gateway
+    container_name: tenant-service
+    image:  /
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://localhost:27017/tenant-service
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - mongo
+      - discovery-service
+      - broker
+      - zipkin
+      - api-gateway
+
   prometheus:
-    image: prom/prometheus:latest
+    image: prom/prometheus:v2.37.1
     container_name: prometheus
     restart: always
     ports:
@@ -95,6 +109,7 @@ services:
       - auth-service
       - property-service
       - tenant-service
+
   grafana:
     image: grafana/grafana-oss:8.5.2
     container_name: grafana
@@ -108,28 +123,3 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=password
-
-  auth-mongo:
-    image: mongo:latest
-    ports:
-      - "27017:27017"
-    volumes:
-      - auth-mongodb-data:/data/db
-
-  property-mongo:
-    image: mongo:latest
-    ports:
-      - "27018:27017"
-    volumes:
-      - property-mongodb-data:/data/db
-
-  tenant-mongo:
-    image: mongo:latest
-    ports:
-      - "27019:27017"
-    volumes:
-      - tenant-mongodb-data:/data/db
-volumes:
-  auth-mongodb-data:
-  property-mongodb-data:
-  tenant-mongodb-data:
