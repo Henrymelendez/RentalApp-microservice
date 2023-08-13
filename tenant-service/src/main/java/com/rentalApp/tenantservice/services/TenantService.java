@@ -11,6 +11,5 @@ public interface TenantService {
     void createTenant(TenantDTO tenantDTO);
     TenantDTO fetchTenant(String tenantId, String propertyId);
     List<Tenant> fetchTenantsForPropertyId(String propertyId);
-    void updateTenant(TenantDTO tenantDTO, String propertyId);
     void deleteAll(String propertyId);
 }

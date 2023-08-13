@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -44,18 +45,31 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     public TenantDTO fetchTenant(String tenantId, String propertyId) {
+        final Optional<Tenant> tenant = tenantDAO.findById(tenantId);
+
+        if(tenant.isPresent()){
+            if(tenant.get().getPropertyId().equals(propertyId)){
+                return modelMapper.map(tenant, TenantDTO.class);
+            }
+            ///TODO: another field as fall back?
+        }
+
         return null;
     }
 
     @Override
     public List<Tenant> fetchTenantsForPropertyId(String propertyId) {
-        return null;
+        List<Tenant> tenant = tenantDAO.findAllByPropertyIdOrderByUpdatedAtDesc(propertyId);
+
+        if(!tenant.isEmpty()){
+            return tenant;
+        }
+        else {
+            //TODO: ADD AN EXCEPTION
+            return  null;
+        }
     }
 
-    @Override
-    public void updateTenant(TenantDTO tenantDTO, String propertyId) {
-
-    }
     @Override
     public void deleteAll(String propertyId){
         checkNotNull(propertyId);
