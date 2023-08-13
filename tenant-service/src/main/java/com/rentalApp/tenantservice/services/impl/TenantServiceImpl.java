@@ -24,7 +24,22 @@ public class TenantServiceImpl implements TenantService {
     public void createTenant(TenantDTO tenantDTO) {
         checkNotNull(tenantDTO);
         Tenant tenant = modelMapper.map(tenantDTO, Tenant.class);
-        tenantDAO.save(tenant);
+
+        if(tenant.isNew()){
+            tenantDAO.save(tenant);
+        }
+        else {
+            Tenant existingTenant = tenantDAO.findById(tenant.getId()).orElse(null);
+            if(existingTenant != null){
+                existingTenant.setId(tenant.getId());
+                existingTenant.setFirstName(tenant.getFirstName());
+                existingTenant.setLastName(tenant.getFirstName());
+                existingTenant.setPropertyId(tenant.getPropertyId());
+                existingTenant.setCreatedAt(tenant.getCreatedAt());
+                tenantDAO.save(existingTenant);
+            }
+        }
+
     }
 
     @Override
