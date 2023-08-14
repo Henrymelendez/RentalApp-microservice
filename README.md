@@ -13,16 +13,18 @@
 - Google Guava
 - Spring Actuator
 - Kafka
+- Google Jib 
 
 ## Features:
 - [x] Login/Logout
 - [x] View All properties for a user
 - [x] Add or Remove propeties
+- [ ] Add a tenant
 ## In Progess:
 - [x] fix auth bug for creating property
 - [x] fix get all property for user bug
 - [x] ensure messaging system works in dockers container ETA 8/13/2023
-- [ ] change configs for kafka and tenant-service to prevent duplicate keys - ETA 8/14/2023
+- [x] change configs for kafka and tenant-service to prevent duplicate keys - ETA 8/14/2023
 - [ ] Unit Tests for services - ETA 8/15/2023
 - [ ] Integration Test for services - ETA 8/17/2023
 - [ ] Add Application performance metrics - ETA 8/22/2023
