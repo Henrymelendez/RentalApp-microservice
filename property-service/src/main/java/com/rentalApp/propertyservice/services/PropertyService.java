@@ -12,4 +12,5 @@ public interface PropertyService {
     PropertyDTO fetchProperty(String propertyId, String userId) throws UserNotAllowedException;
     List<PropertyDTO> fetchTopRecentProperties(String userId);
     void updateProperty(PropertyDTO propertyDTO, String userId);
+
 }

@@ -11,8 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableWebSecurity
 @EnableKafka
+@EnableWebSecurity
 public class PropertyServiceApplication {
 
 	public static void main(String[] args) {

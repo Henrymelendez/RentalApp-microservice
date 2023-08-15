@@ -65,7 +65,7 @@ services:
 
   auth-service:
     container_name: auth-service
-    image: /
+    image:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:

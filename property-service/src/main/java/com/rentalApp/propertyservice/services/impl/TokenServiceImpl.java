@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.micrometer.common.util.StringUtils.isEmpty;
+import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 
 @Service
 public class TokenServiceImpl implements TokenService {
