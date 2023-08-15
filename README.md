@@ -30,3 +30,10 @@
 - [ ] Add Application performance metrics - ETA 8/22/2023
 - [ ] create front end with angular
 - [ ] create jenkins pipeline which runs tests, sonarqube, build, and pushes images
+
+## Future Features 
+- [ ] create metrics engine 
+- [ ] use kafka to collect payment data
+- [ ] create a dash board to display information
+- [ ] use redis for caching 
+- [ ] put it on kubernetes
