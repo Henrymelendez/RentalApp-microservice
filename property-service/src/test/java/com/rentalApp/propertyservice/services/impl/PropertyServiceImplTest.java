@@ -1,7 +1,7 @@
 package com.rentalApp.propertyservice.services.impl;
 
 import com.rentalApp.propertyservice.dao.PropertyDAO;
-import com.rentalApp.propertyservice.dao.exceptions.UserNotAllowedException;
+import com.rentalApp.propertyservice.exceptions.UserNotAllowedException;
 import com.rentalApp.propertyservice.dto.PropertyDTO;
 import com.rentalApp.propertyservice.models.Property;
 import org.junit.jupiter.api.BeforeEach;
