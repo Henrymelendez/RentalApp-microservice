@@ -3,7 +3,7 @@ package com.rentalApp.propertyservice.services.impl;
 import com.rentalApp.propertyservice.dao.PropertyDAO;
 import com.rentalApp.propertyservice.dto.PropertyDTO;
 import com.rentalApp.propertyservice.services.PropertyService;
-import com.rentalApp.propertyservice.dao.exceptions.UserNotAllowedException;
+import com.rentalApp.propertyservice.exceptions.UserNotAllowedException;
 import com.rentalApp.propertyservice.models.Property;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +83,7 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public void updateProperty(PropertyDTO propertyDTO, String userId) {
+    public void updateProperty(PropertyDTO propertyDTO, String userId) throws UserNotAllowedException {
         checkNotNull(propertyDTO.getStreet());
         checkNotNull(propertyDTO.getCity());
         checkNotNull(propertyDTO.getState());
@@ -96,8 +96,10 @@ public class PropertyServiceImpl implements PropertyService {
             }
             else {
                 // TODO: throw USER not allowed exception
+               throw new UserNotAllowedException("You Are Not Allowed to Perform that Action");
             }
         }
         //TODO: non such element exception
+        throw new NoSuchElementException("No Such Property Exists");
     }
 }

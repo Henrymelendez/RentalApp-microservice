@@ -1,6 +1,6 @@
-package com.rentalApp.propertyservice.dao.exceptions.handler;
+package com.rentalApp.propertyservice.exceptions.handler;
 
-import com.rentalApp.propertyservice.dao.exceptions.UserNotAllowedException;
+import com.rentalApp.propertyservice.exceptions.UserNotAllowedException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

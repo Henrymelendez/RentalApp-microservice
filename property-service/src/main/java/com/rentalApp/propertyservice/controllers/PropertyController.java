@@ -1,7 +1,7 @@
 package com.rentalApp.propertyservice.controllers;
 
 import com.rentalApp.propertyservice.dto.PropertyDTO;
-import com.rentalApp.propertyservice.dao.exceptions.UserNotAllowedException;
+import com.rentalApp.propertyservice.exceptions.UserNotAllowedException;
 import com.rentalApp.propertyservice.services.PropertyService;
 import com.rentalApp.propertyservice.services.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
