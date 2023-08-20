@@ -1,7 +1,7 @@
 package com.rentalApp.propertyservice.services;
 
 import com.rentalApp.propertyservice.dto.PropertyDTO;
-import com.rentalApp.propertyservice.exceptions.UserNotAllowedException;
+import com.rentalApp.propertyservice.dao.exceptions.UserNotAllowedException;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.rentalApp.propertyservice.exceptions;
+package com.rentalApp.propertyservice.dao.exceptions;
 
 public class UserNotAllowedException extends Exception{
     public UserNotAllowedException(String s){
