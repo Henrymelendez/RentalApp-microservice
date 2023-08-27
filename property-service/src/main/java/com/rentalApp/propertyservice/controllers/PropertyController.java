@@ -1,7 +1,7 @@
 package com.rentalApp.propertyservice.controllers;
 
 import com.rentalApp.propertyservice.dto.PropertyDTO;
-import com.rentalApp.propertyservice.dao.exceptions.UserNotAllowedException;
+import com.rentalApp.propertyservice.exceptions.UserNotAllowedException;
 import com.rentalApp.propertyservice.services.PropertyService;
 import com.rentalApp.propertyservice.services.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -50,7 +50,7 @@ public class PropertyController {
     }
     @PutMapping("/update")
     @PreAuthorize("hasAnyRole('USER','ADMIN'")
-    public PropertyDTO updateProperty(@RequestBody PropertyDTO property, HttpServletRequest httpServletRequest){
+    public PropertyDTO updateProperty(@RequestBody PropertyDTO property, HttpServletRequest httpServletRequest) throws UserNotAllowedException {
         String userId = getUserIdFromToken(httpServletRequest);
         propertyService.updateProperty(property,userId);
         return property;

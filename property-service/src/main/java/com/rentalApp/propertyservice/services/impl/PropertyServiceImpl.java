@@ -46,7 +46,6 @@ public class PropertyServiceImpl implements PropertyService {
 
         if(userId.equals(callerId)){
             return allByUserId.stream()
-                    .filter(property -> property.getId().equals(callerId))
                     .map(property -> modelMapper.map(property, PropertyDTO.class))
                     .collect(Collectors.toList());
         }else {
@@ -88,15 +87,21 @@ public class PropertyServiceImpl implements PropertyService {
         checkNotNull(propertyDTO.getCity());
         checkNotNull(propertyDTO.getState());
         final Optional<Property> propertyOptional = propertyDAO.findById(propertyDTO.getId());
+
         if(propertyOptional.isPresent()){
             final Property property = propertyOptional.get();
             if(property.getUserId().equals(userId)){
+                property.setStreet(propertyDTO.getStreet());
+                property.setCity(propertyDTO.getCity());
+                property.setState(propertyDTO.getState());
+                
+                propertyDAO.save(property);
                 modelMapper.map(property, propertyDTO);
                 return;
             }
             else {
                 // TODO: throw USER not allowed exception
-               throw new UserNotAllowedException("You Are Not Allowed to Perform that Action");
+                throw new UserNotAllowedException("You Are Not Allowed to Perform that Action");
             }
         }
         //TODO: non such element exception

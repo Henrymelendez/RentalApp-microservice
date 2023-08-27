@@ -91,7 +91,8 @@ class PropertyServiceImplTest {
         String propertyId = "propertyId";
 
         Property property = new Property();
-        property.setId(userId);
+        property.setId(propertyId);
+        property.setUserId(userId);
 
         when(propertyDAO.findById(propertyId)).thenReturn(Optional.of(property));
         when(modelMapper.map(property,PropertyDTO.class)).thenReturn(new PropertyDTO());
@@ -106,7 +107,8 @@ class PropertyServiceImplTest {
         String propertyId = "propertyId";
 
         Property property = new Property();
-        property.setId(userId);
+        property.setId(propertyId);
+        property.setUserId(userId);
 
         when(propertyDAO.findById(propertyId)).thenReturn(Optional.of(property));
 
@@ -132,21 +134,24 @@ class PropertyServiceImplTest {
     @Test
     void updateProperty() throws UserNotAllowedException {
         String userId = "user1";
+        String propertyId = "propertyId";
 
         PropertyDTO propertyDTO = new PropertyDTO();
-        propertyDTO.setId("propertyId");
-        propertyDTO.setState("123 Main St");
+        propertyDTO.setId(propertyId);
+        propertyDTO.setStreet("123 Main St");
         propertyDTO.setCity("City");
         propertyDTO.setState("State");
 
+
         Property property = new Property();
-        property.setId(userId);
+        property.setId(propertyId);
+        property.setUserId(userId);
 
         when(propertyDAO.findById(propertyDTO.getId())).thenReturn(Optional.of(property));
 
         propertyService.updateProperty(propertyDTO,userId);
 
         verify(propertyDAO, times(1)).findById(propertyDTO.getId());
-        verify(modelMapper, times(1)).map(property,propertyDTO);
+        verify(propertyDAO, times(1)).save(property);
     }
 }
