@@ -3,6 +3,7 @@ package com.rentalApp.tenantservice.services.impl;
 
 import com.rentalApp.tenantservice.daos.TenantDAO;
 import com.rentalApp.tenantservice.dtos.TenantDTO;
+import com.rentalApp.tenantservice.exceptions.UserNotAllowedException;
 import com.rentalApp.tenantservice.model.Tenant;
 import com.rentalApp.tenantservice.services.TenantService;
 import org.modelmapper.ModelMapper;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -44,17 +46,20 @@ public class TenantServiceImpl implements TenantService {
     }
 
     @Override
-    public TenantDTO fetchTenant(String tenantId, String propertyId) {
+    public TenantDTO fetchTenant(String tenantId, String propertyId) throws UserNotAllowedException {
         final Optional<Tenant> tenant = tenantDAO.findById(tenantId);
 
         if(tenant.isPresent()){
             if(tenant.get().getPropertyId().equals(propertyId)){
-                return modelMapper.map(tenant, TenantDTO.class);
+                return modelMapper.map(tenant.get(), TenantDTO.class);
             }
-            ///TODO: another field as fall back?
+            else{
+                throw new UserNotAllowedException("Your Not Allowed to Perform that Action");
+            }
         }
-
-        return null;
+        else {
+            throw new NoSuchElementException("No Such Tenant Exists");
+        }
     }
 
     @Override
@@ -65,8 +70,7 @@ public class TenantServiceImpl implements TenantService {
             return tenant;
         }
         else {
-            //TODO: ADD AN EXCEPTION
-            return  null;
+            throw new NoSuchElementException("No Tenants Found for Property");
         }
     }
 

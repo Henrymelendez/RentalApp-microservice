@@ -2,6 +2,7 @@ package com.rentalApp.tenantservice.controllers;
 
 
 import com.rentalApp.tenantservice.dtos.TenantDTO;
+import com.rentalApp.tenantservice.exceptions.UserNotAllowedException;
 import com.rentalApp.tenantservice.services.TenantService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
@@ -25,7 +26,7 @@ public class TenantController {
         return null;
     }
     @GetMapping("/fetch/{tenantId}")
-    public TenantDTO fetchTenant(@PathVariable String tenantId, HttpServletRequest httpServletRequest){
+    public TenantDTO fetchTenant(@PathVariable String tenantId, HttpServletRequest httpServletRequest) throws UserNotAllowedException {
         String propertyId = getJwtTokenFromHeader(httpServletRequest);
         return tenantService.fetchTenant(tenantId,propertyId);
     }

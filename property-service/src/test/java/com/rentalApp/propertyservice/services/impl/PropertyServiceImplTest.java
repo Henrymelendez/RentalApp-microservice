@@ -101,7 +101,7 @@ class PropertyServiceImplTest {
     }
 
     @Test
-    void testFetchPropertNotAllowed(){
+    void testFetchPropertyNotAllowed(){
         String userId = "user1";
         String callerId = "user2";
         String propertyId = "propertyId";
