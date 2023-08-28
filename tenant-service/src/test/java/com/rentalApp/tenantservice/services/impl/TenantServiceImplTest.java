@@ -18,6 +18,9 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -93,6 +96,28 @@ class TenantServiceImplTest {
 
     @Test
     void fetchTenantsForPropertyId() {
+        String propertyId = "propertyId";
+
+        List<Tenant> tenants = new ArrayList<>();
+        tenants.add(new Tenant());
+        when(tenantDAO.findAllByPropertyIdOrderByUpdatedAtDesc(propertyId)).thenReturn(tenants);
+
+        List<Tenant> tenantList = tenantService.fetchTenantsForPropertyId(propertyId);
+        assertNotNull(tenantList);
+        assertEquals(1,tenantList.size());
+    }
+
+    @Test
+    void testNoSuchElementForTenantForPropertyId(){
+        String propertyId = "propertyId";
+        String callerPropertyId = "callerPropertyId";
+
+        List<Tenant> tenants = new ArrayList<>();
+        tenants.add(new Tenant());
+        when(tenantDAO.findAllByPropertyIdOrderByUpdatedAtDesc(propertyId)).thenReturn(tenants);
+        assertThrows(NoSuchElementException.class, () ->{
+            tenantService.fetchTenantsForPropertyId(callerPropertyId);
+        });
     }
 
     @Test
